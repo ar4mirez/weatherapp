@@ -3,6 +3,7 @@ FROM docker.io/golang:1.21.1-alpine
 
 ENV GO111MODULE=on
 ENV GOFLAGS=-mod=vendor
+ENV OPENWEATHERMAP_API_KEY=32279a2fd2ecc3d998d67b038a0e3d39
 
 # Set the working directory inside the container
 WORKDIR /app
