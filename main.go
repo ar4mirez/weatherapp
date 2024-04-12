@@ -69,7 +69,7 @@ func main() {
 	})
 
 	// Define a handler function to get weather data from OpenWeatherMap.
-	http.HandleFunc("/w", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/api", func(w http.ResponseWriter, r *http.Request) {
 		city := r.URL.Query().Get("city")
 		if city == "" {
 			http.Error(w, "City parameter is required", http.StatusBadRequest)
