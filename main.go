@@ -39,7 +39,7 @@ func main() {
 		}
 
 		if err := json.NewEncoder(w).Encode(&WeatherLiveResponse{
-			Message: "Yes it's ready",
+			Message: "Yes the application is ready",
 		}); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
