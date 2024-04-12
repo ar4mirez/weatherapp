@@ -1,0 +1,13 @@
+apiVersion: skaffold/v4beta9
+kind: Config
+metadata:
+  name: weatherapp
+build:
+  artifacts:
+    - image: weatherapp
+      docker:
+        dockerfile: Dockerfile
+manifests:
+  kustomize:
+    paths:
+    - kubernetes/kustomize

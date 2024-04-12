@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: weatherapp
+  labels:
+    app: weatherapp
+spec:
+  selector:
+    matchLabels:
+      app: weatherapp
+  template:
+    metadata:
+      labels:
+        app: weatherapp
+    spec:
+      serviceAccountName: default
+      securityContext:
+        fsGroup: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+        runAsUser: 1000
+      containers:
+        - name: server
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            privileged: false
+            readOnlyRootFilesystem: true
+          image: weatherapp
+          ports:
+          - name: http
+            containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: "/ready"
+              port: 8080
+          livenessProbe:
+            httpGet:
+              path: "/live"
+              port: 8080
+          envFrom:
+            - secretRef:
+                name: weatherapp
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: weatherapp
+  labels:
+    app: weatherapp
+spec:
+  type: ClusterIP
+  selector:
+    app: weatherapp
+  ports:
+  - name: http
+    port: 8080
+    targetPort: 8080
