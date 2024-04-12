@@ -15,7 +15,7 @@ Follow these steps to build and run the application in a Docker container:
 
 ## Clone this repository:
 ```bash
-git clone https://github.com/ar4mirez/workshop-zero-to-hero-devops.git
+git clone https://github.com/ar4mirez/weatherapp.git
 ```
 
 ## Navigate to the project directory

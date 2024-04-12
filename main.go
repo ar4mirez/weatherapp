@@ -57,8 +57,19 @@ func main() {
 		}
 	})
 
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+
+		if err := json.NewEncoder(w).Encode(&WeatherLiveResponse{
+			Message: "Yes it's works no worries :D",
+		}); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	})
+
 	// Define a handler function to get weather data from OpenWeatherMap.
-	http.HandleFunc("/weather", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/w", func(w http.ResponseWriter, r *http.Request) {
 		city := r.URL.Query().Get("city")
 		if city == "" {
 			http.Error(w, "City parameter is required", http.StatusBadRequest)
