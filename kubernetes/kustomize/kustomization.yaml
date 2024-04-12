@@ -6,6 +6,7 @@ resources:
 components:
 - components/enable-network-policies
 - components/expose-weatherapp
+- components/expose-weatherapp/enable-prod-ingress
 
 secretGenerator:
   - name: weatherapp

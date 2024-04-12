@@ -1,0 +1,31 @@
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+resources:
+  - letsencrypt-prod.yaml
+patches:
+- patch: |-
+    apiVersion: networking.k8s.io/v1
+    kind: Ingress
+    metadata:
+      name: weatherapp
+      labels:
+        name: weatherapp
+      annotations:
+        cert-manager.io/issuer: "weatherapp-prod"
+    spec:
+      ingressClassName: nginx
+      tls:
+      - hosts:
+        - weatherapp.86.109.8.247.nip.io
+        secretName: weatherapp-prod-86-109-8-247-nip-io-tls
+      rules:
+      - host: weatherapp.86.109.8.247.nip.io
+        http:
+          paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: weatherapp
+                port: 
+                  number: 8080
