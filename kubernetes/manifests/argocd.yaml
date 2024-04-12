@@ -1,0 +1,43 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: arcgocd-server-ingress
+spec:
+  acme:
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    email: argocd-86-109-8-247@nip.io
+    privateKeySecretRef:
+      name: argocd-86-109-8-247-nip-io
+    solvers:
+      - http01:
+          ingress:
+            ingressClassName: nginx
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: argocd-server-ingress
+  namespace: argocd
+  annotations:
+    cert-manager.io/cluster-issuer: arcgocd-server-ingress
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+      - argocd-86.109.8.247.nip.io
+      secretName: argocd-86-109-8-247-nip-io
+  rules:
+  - host: argocd-86.109.8.247.nip.io
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: argocd-server
+            port:
+              name: https
